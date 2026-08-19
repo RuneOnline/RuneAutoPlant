@@ -25,7 +25,7 @@ fun replantCropCountModule(plugin: JavaPlugin) = module {
     single { PlayerCountStorable(get(), get()) }
 
     single { PlayerCountService(get(), get()) }
-    single { CropService(get()) }
+    single { CropService(get(), get()) }
 
     single { BlockChangesListener(get(), get()) }
     single { PlayerConnectionListener(get(), get()) }

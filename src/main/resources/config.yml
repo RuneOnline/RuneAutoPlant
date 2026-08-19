@@ -4,3 +4,11 @@ mongodb:
   collection: "player_counts"
 sync:
   period-ticks: 1200
+replant:
+  delay-ticks: 20
+crops:
+  - WHEAT
+  - CARROT
+  - POTATO
+  - NETHER_WART
+  - BEETROOTS

@@ -19,13 +19,9 @@ class BlockChangesListener(
         if (playerCountService.getCount(player.uniqueId) <= 0) return
 
         val blockData = event.block.blockData
-        val blockMaterial = blockData.material
-        val playerInventory = player.inventory
+        if (!cropService.isFullyGrownCrop(blockData)) return
 
-        if (cropService.isFullyGrownCrop(blockData) && cropService.hasEnoughSeed(blockMaterial, playerInventory)) {
-            cropService.takeSeed(blockMaterial, playerInventory)
-            cropService.replantCrop(blockData.material, event.block.location)
-            playerCountService.takeCount(player.uniqueId, 1)
-        }
+        cropService.replantCrop(blockData.material, event.block.location)
+        playerCountService.takeCount(player.uniqueId, 1)
     }
 }

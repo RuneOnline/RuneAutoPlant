@@ -1,5 +1,6 @@
 package org.rookieand.replantCropCount.configuration
 
+import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
 
 class PluginConfiguration(plugin: JavaPlugin) {
@@ -10,4 +11,17 @@ class PluginConfiguration(plugin: JavaPlugin) {
     val mongoCollection: String = config.getString("mongodb.collection") ?: "player_counts"
 
     val syncPeriodTicks: Long = config.getLong("sync.period-ticks").takeIf { it > 0 } ?: 1200L
+
+    val replantDelayTicks: Long = config.getLong("replant.delay-ticks").takeIf { it > 0 } ?: 20L
+
+    val cropMaterials: Set<Material> = config.getStringList("crops")
+        .mapNotNull { runCatching { Material.valueOf(it) }.getOrNull() }
+        .toSet()
+        .ifEmpty { DEFAULT_CROPS }
+
+    companion object {
+        private val DEFAULT_CROPS = setOf(
+            Material.WHEAT, Material.CARROT, Material.POTATO, Material.NETHER_WART, Material.BEETROOTS
+        )
+    }
 }

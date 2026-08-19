@@ -1,0 +1,6 @@
+mongodb:
+  uri: "mongodb://localhost:27017"
+  database: "replant_crop_count"
+  collection: "player_counts"
+sync:
+  period-ticks: 1200

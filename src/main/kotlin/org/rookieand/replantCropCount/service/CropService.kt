@@ -1,4 +1,4 @@
-package org.rookieand.replantCropCount.manager
+package org.rookieand.replantCropCount.service
 
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -9,12 +9,12 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 import org.bukkit.plugin.java.JavaPlugin
 
-class CropManager(
+class CropService(
     private val plugin: JavaPlugin
 ) {
     private val cropBlockSet =
-        setOf<Material>(Material.WHEAT, Material.CARROT, Material.POTATO, Material.NETHER_WART, Material.BEETROOTS)
-    private val cropSeedMap = mapOf<Material, Material>(
+        setOf(Material.WHEAT, Material.CARROT, Material.POTATO, Material.NETHER_WART, Material.BEETROOTS)
+    private val cropSeedMap = mapOf(
         Material.WHEAT to Material.WHEAT_SEEDS,
         Material.POTATO to Material.POTATOES,
         Material.CARROT to Material.CARROTS,

@@ -1,19 +1,20 @@
-package org.rookieand.replantCropCount
+package org.rookieand.autoplant
 
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.rookieand.replantCropCount.api.ReplantCropCountApi
-import org.rookieand.replantCropCount.command.ReplantCropCountCommand
-import org.rookieand.replantCropCount.database.PlayerCountRepository
-import org.rookieand.replantCropCount.listener.BlockChangesListener
-import org.rookieand.replantCropCount.listener.PlayerConnectionListener
-import org.rookieand.replantCropCount.scheduler.PlayerCountSyncScheduler
-import org.rookieand.replantCropCount.storable.PlayerCountStorable
+import org.rookieand.autoplant.api.AutoplantApi
+import org.rookieand.autoplant.command.AutoplantCommand
+import org.rookieand.autoplant.database.MongoConnectionException
+import org.rookieand.autoplant.database.PlayerCountRepository
+import org.rookieand.autoplant.listener.BlockChangesListener
+import org.rookieand.autoplant.listener.PlayerConnectionListener
+import org.rookieand.autoplant.scheduler.PlayerCountSyncScheduler
+import org.rookieand.autoplant.storable.PlayerCountStorable
 
-class ReplantCropCountPlugin : JavaPlugin() {
+class AutoplantPlugin : JavaPlugin() {
     companion object {
         var instance: KoinApplication? = null
             private set
@@ -23,16 +24,22 @@ class ReplantCropCountPlugin : JavaPlugin() {
         saveDefaultConfig()
         val koin = initializeModule(this).also { instance = it }.koin
 
-        koin.get<PlayerCountRepository>().connect()
+        try {
+            koin.get<PlayerCountRepository>().connect()
+        } catch (e: MongoConnectionException) {
+            logger.severe(e.message)
+            server.pluginManager.disablePlugin(this)
+            return
+        }
 
         server.pluginManager.registerEvents(koin.get<BlockChangesListener>(), this)
         server.pluginManager.registerEvents(koin.get<PlayerConnectionListener>(), this)
 
-        koin.get<ReplantCropCountCommand>().register()
+        koin.get<AutoplantCommand>().register()
 
         server.servicesManager.register(
-            ReplantCropCountApi::class.java,
-            koin.get<ReplantCropCountApi>(),
+            AutoplantApi::class.java,
+            koin.get<AutoplantApi>(),
             this,
             ServicePriority.Normal
         )
@@ -56,5 +63,5 @@ class ReplantCropCountPlugin : JavaPlugin() {
 }
 
 fun initializeModule(plugin: JavaPlugin) = startKoin {
-    modules(replantCropCountModule(plugin))
+    modules(autoplantModule(plugin))
 }

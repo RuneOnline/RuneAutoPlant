@@ -1,7 +1,7 @@
-package org.rookieand.replantCropCount.storable
+package org.rookieand.autoplant.storable
 
-import org.rookieand.replantCropCount.database.PlayerCountRepository
-import org.rookieand.replantCropCount.registry.PlayerCountRegistry
+import org.rookieand.autoplant.database.PlayerCountRepository
+import org.rookieand.autoplant.registry.PlayerCountRegistry
 import java.util.UUID
 
 // registry(캐시)와 repository(DB) 사이의 영속화 오케스트레이션. 모든 호출은 비동기 스레드에서.

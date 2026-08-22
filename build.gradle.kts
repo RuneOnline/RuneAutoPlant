@@ -64,4 +64,11 @@ tasks {
     test {
         useJUnitPlatform()
     }
+
+    // ponytail: 배포 경로 하드코딩(개인 서버 전용). 다른 PC에서 쓰면 pluginsDir만 수정
+    register<Copy>("deployToRune") {
+        val pluginsDir = "C:/Users/Admin/Desktop/Rune/plugins"
+        from(shadowJar)
+        into(pluginsDir)
+    }
 }

@@ -1,4 +1,4 @@
-package org.rookieand.replantCropCount.command
+package org.rookieand.autoplant.command
 
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.IntegerArgumentType
@@ -9,10 +9,10 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import org.rookieand.replantCropCount.service.PlayerCountService
+import org.rookieand.autoplant.service.PlayerCountService
 
 @Suppress("UnstableApiUsage", "DEPRECATION")
-class ReplantCropCountCommand(
+class AutoplantCommand(
     private val plugin: JavaPlugin,
     private val playerCountService: PlayerCountService
 ) {
@@ -23,19 +23,19 @@ class ReplantCropCountCommand(
     }
 
     private fun buildNode() =
-        Commands.literal("replantcropcount")
+        Commands.literal("autoplant")
             .executes { ctx ->
                 val sender = ctx.source.sender
                 if (sender is Player) {
                     sender.sendMessage("남은 자동 심기 횟수: ${playerCountService.getCount(sender.uniqueId)}")
                 } else {
-                    sender.sendMessage("사용법: /replantcropcount <get|add|set> <player> [amount]")
+                    sender.sendMessage("사용법: /autoplant <get|add|set> <player> [amount]")
                 }
                 Command.SINGLE_SUCCESS
             }
             .then(
                 Commands.literal("get")
-                    .requires { it.sender.hasPermission("replantcropcount.admin") }
+                    .requires { it.sender.hasPermission("autoplant.admin") }
                     .then(
                         playerArgument().executes { ctx ->
                             handleGet(ctx.source.sender, StringArgumentType.getString(ctx, "player"))
@@ -49,7 +49,7 @@ class ReplantCropCountCommand(
 
     private fun mutateBranch(action: String) =
         Commands.literal(action)
-            .requires { it.sender.hasPermission("replantcropcount.admin") }
+            .requires { it.sender.hasPermission("autoplant.admin") }
             .then(
                 playerArgument().then(
                     Commands.argument("amount", IntegerArgumentType.integer()).executes { ctx ->

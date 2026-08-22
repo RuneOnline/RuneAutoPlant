@@ -1,4 +1,4 @@
-# replantCropsCount
+# autoplant
 
 > 아 Javascript 말고 다른 언어 좀 배우고 싶다!
 

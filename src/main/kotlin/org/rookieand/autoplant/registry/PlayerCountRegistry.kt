@@ -1,6 +1,6 @@
-package org.rookieand.replantCropCount.registry
+package org.rookieand.autoplant.registry
 
-import org.rookieand.replantCropCount.data.PlayerCount
+import org.rookieand.autoplant.data.PlayerCount
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 

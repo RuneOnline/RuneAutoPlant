@@ -1,10 +1,10 @@
-name: ReplantCropCount
+name: Autoplant
 version: '${version}'
 api-version: '${apiVersion}'
-main: org.rookieand.replantCropCount.ReplantCropCountPlugin
+main: org.rookieand.autoplant.AutoplantPlugin
 author: RookieAND
 website: https://github.com/RookieAND
 permissions:
-  replantcropcount.admin:
+  autoplant.admin:
     description: 다른 플레이어의 자동 심기 횟수를 조회/설정/추가할 수 있는 권한
     default: op

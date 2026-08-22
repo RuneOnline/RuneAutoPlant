@@ -1,4 +1,4 @@
-package org.rookieand.replantCropCount.registry
+package org.rookieand.autoplant.registry
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse

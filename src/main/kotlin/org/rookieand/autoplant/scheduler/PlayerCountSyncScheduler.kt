@@ -1,8 +1,8 @@
-package org.rookieand.replantCropCount.scheduler
+package org.rookieand.autoplant.scheduler
 
 import org.bukkit.plugin.java.JavaPlugin
-import org.rookieand.replantCropCount.configuration.PluginConfiguration
-import org.rookieand.replantCropCount.storable.PlayerCountStorable
+import org.rookieand.autoplant.configuration.PluginConfiguration
+import org.rookieand.autoplant.storable.PlayerCountStorable
 
 class PlayerCountSyncScheduler(
     private val plugin: JavaPlugin,

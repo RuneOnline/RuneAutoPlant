@@ -1,11 +1,11 @@
-package org.rookieand.replantCropCount.listener
+package org.rookieand.autoplant.listener
 
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
-import org.rookieand.replantCropCount.service.CropService
-import org.rookieand.replantCropCount.service.PlayerCountService
+import org.rookieand.autoplant.service.CropService
+import org.rookieand.autoplant.service.PlayerCountService
 
 class BlockChangesListener(
     private val cropService: CropService,

@@ -1,7 +1,7 @@
-package org.rookieand.replantCropCount.service
+package org.rookieand.autoplant.service
 
-import org.rookieand.replantCropCount.database.PlayerCountRepository
-import org.rookieand.replantCropCount.registry.PlayerCountRegistry
+import org.rookieand.autoplant.database.PlayerCountRepository
+import org.rookieand.autoplant.registry.PlayerCountRegistry
 import java.util.UUID
 
 // 온라인 유저는 registry(캐시)로, 오프라인 유저는 repository(DB)로 처리한다.

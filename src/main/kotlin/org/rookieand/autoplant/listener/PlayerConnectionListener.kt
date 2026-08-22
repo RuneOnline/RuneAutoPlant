@@ -1,11 +1,11 @@
-package org.rookieand.replantCropCount.listener
+package org.rookieand.autoplant.listener
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.java.JavaPlugin
-import org.rookieand.replantCropCount.storable.PlayerCountStorable
+import org.rookieand.autoplant.storable.PlayerCountStorable
 
 class PlayerConnectionListener(
     private val plugin: JavaPlugin,

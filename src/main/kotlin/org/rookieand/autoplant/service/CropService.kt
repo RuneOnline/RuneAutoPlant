@@ -1,4 +1,4 @@
-package org.rookieand.replantCropCount.service
+package org.rookieand.autoplant.service
 
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -6,7 +6,7 @@ import org.bukkit.Material
 import org.bukkit.block.data.Ageable
 import org.bukkit.block.data.BlockData
 import org.bukkit.plugin.java.JavaPlugin
-import org.rookieand.replantCropCount.configuration.PluginConfiguration
+import org.rookieand.autoplant.configuration.PluginConfiguration
 
 class CropService(
     private val plugin: JavaPlugin,

@@ -1,11 +1,11 @@
-package org.rookieand.replantCropCount.api
+package org.rookieand.autoplant.api
 
-import org.rookieand.replantCropCount.service.PlayerCountService
+import org.rookieand.autoplant.service.PlayerCountService
 import java.util.UUID
 
-class ReplantCropCountApiProvider(
+class AutoplantApiProvider(
     private val playerCountService: PlayerCountService
-) : ReplantCropCountApi {
+) : AutoplantApi {
     override fun getCount(uuid: UUID): Int = playerCountService.getCount(uuid)
     override fun setCount(uuid: UUID, count: Int) = playerCountService.setCount(uuid, count)
     override fun addCount(uuid: UUID, count: Int) = playerCountService.addCount(uuid, count)

@@ -20,7 +20,7 @@ class CustomCropsListener(
         if (event.reason() != BreakReason.BREAK) return
         val player = event.entityBreaker() as? Player ?: return
         if (player.gameMode !== GameMode.SURVIVAL) return
-        if (playerCountService.getCount(player.uniqueId) <= 0) return
+        if (playerCountService.getOnlineCount(player.uniqueId) <= 0) return
 
         if (!customCropsService.tryReplant(player, event)) return
         playerCountService.takeCount(player.uniqueId, 1)

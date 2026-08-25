@@ -17,7 +17,7 @@ class BlockChangesListener(
     fun onBreakCropBlock(event: BlockBreakEvent) {
         val player = event.player
         if (player.gameMode !== GameMode.SURVIVAL) return
-        if (playerCountService.getCount(player.uniqueId) <= 0) return
+        if (playerCountService.getOnlineCount(player.uniqueId) <= 0) return
 
         if (!cropService.tryReplant(player, event.block)) return
         playerCountService.takeCount(player.uniqueId, 1)

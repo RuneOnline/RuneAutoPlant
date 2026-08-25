@@ -54,9 +54,9 @@ class PlayerCountRegistryTest {
     }
 
     @Test
-    fun `등록되지 않은 UUID 를 변경해도 엔트리가 생성되지 않는다`() {
-        registry.add(uuid, 5)
-        registry.set(uuid, 3)
+    fun `등록되지 않은 UUID 를 변경하면 false 를 반환하고 엔트리도 생성되지 않는다`() {
+        assertFalse(registry.add(uuid, 5))
+        assertFalse(registry.set(uuid, 3))
 
         assertNull(registry.get(uuid))
         assertFalse(registry.contains(uuid))

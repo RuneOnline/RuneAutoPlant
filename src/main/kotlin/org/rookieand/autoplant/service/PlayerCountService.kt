@@ -13,10 +13,11 @@ class PlayerCountService(
     fun getCount(uuid: UUID): Int =
         registry.get(uuid)?.count ?: repository.load(uuid) ?: 0
 
+    // 메인 스레드(리스너)용 non-blocking 조회. 캐시에 없으면 0으로 간주해 DB를 건드리지 않는다.
+    fun getOnlineCount(uuid: UUID): Int = registry.get(uuid)?.count ?: 0
+
     fun addCount(uuid: UUID, count: Int) {
-        if (registry.contains(uuid)) {
-            registry.add(uuid, count)
-        } else {
+        if (!registry.add(uuid, count)) {
             repository.save(uuid, (repository.load(uuid) ?: 0) + count)
         }
     }
@@ -24,9 +25,7 @@ class PlayerCountService(
     fun takeCount(uuid: UUID, count: Int) = addCount(uuid, -count)
 
     fun setCount(uuid: UUID, count: Int) {
-        if (registry.contains(uuid)) {
-            registry.set(uuid, count)
-        } else {
+        if (!registry.set(uuid, count)) {
             repository.save(uuid, count)
         }
     }

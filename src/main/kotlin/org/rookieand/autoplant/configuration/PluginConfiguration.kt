@@ -2,26 +2,65 @@ package org.rookieand.autoplant.configuration
 
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
+import org.rookieand.autoplant.data.MongoSettings
 
 class PluginConfiguration(plugin: JavaPlugin) {
     private val config = plugin.config
 
-    val mongoUri: String = config.getString("mongodb.uri") ?: "mongodb://localhost:27017"
-    val mongoDatabase: String = config.getString("mongodb.database") ?: "autoplant"
-    val mongoCollection: String = config.getString("mongodb.collection") ?: "player_counts"
+    val mongo: MongoSettings = loadMongo()
+    val syncPeriodTicks: Long = loadSyncPeriodTicks()
+    val replantDelayTicks: Long = loadReplantDelayTicks()
+    val cropSeeds: Map<Material, Material> = loadCropSeeds()
+    val stemReplants: Map<Material, Material> = loadStemReplants()
 
-    val syncPeriodTicks: Long = config.getLong("sync.period-ticks").takeIf { it > 0 } ?: 1200L
+    private fun loadMongo() = MongoSettings(
+        uri = config.getString("mongodb.uri") ?: "mongodb://localhost:27017",
+        database = config.getString("mongodb.database") ?: "autoplant",
+        collection = config.getString("mongodb.collection") ?: "player_counts"
+    )
 
-    val replantDelayTicks: Long = config.getLong("replant.delay-ticks").takeIf { it > 0 } ?: 20L
+    private fun loadSyncPeriodTicks(): Long =
+        config.getLong("sync.period-ticks").takeIf { it > 0 } ?: 1200L
 
-    val cropMaterials: Set<Material> = config.getStringList("crops")
-        .mapNotNull { runCatching { Material.valueOf(it) }.getOrNull() }
-        .toSet()
-        .ifEmpty { DEFAULT_CROPS }
+    private fun loadReplantDelayTicks(): Long =
+        config.getLong("replant.delay-ticks").takeIf { it > 0 } ?: 20L
+
+    // 작물 블럭 -> 소모할 씨앗
+    private fun loadCropSeeds(): Map<Material, Material> =
+        readMaterialMap("crops").ifEmpty { DEFAULT_CROP_SEEDS }
+
+    // 부착 줄기 -> 재심기할 성장 줄기
+    private fun loadStemReplants(): Map<Material, Material> =
+        readMaterialMap("stems").ifEmpty { DEFAULT_STEMS }
+
+    private fun readMaterialMap(path: String): Map<Material, Material> {
+        val section = config.getConfigurationSection(path) ?: return emptyMap()
+        return section.getKeys(false).mapNotNull { key ->
+            val from = material(key) ?: return@mapNotNull null
+            val to = material(section.getString(key)) ?: return@mapNotNull null
+            from to to
+        }.toMap()
+    }
+
+    private fun material(name: String?): Material? =
+        name?.let { runCatching { Material.valueOf(it) }.getOrNull() }
 
     companion object {
-        private val DEFAULT_CROPS = setOf(
-            Material.WHEAT, Material.CARROT, Material.POTATO, Material.NETHER_WART, Material.BEETROOTS
+        private val DEFAULT_CROP_SEEDS = mapOf(
+            Material.WHEAT to Material.WHEAT_SEEDS,
+            Material.CARROTS to Material.CARROT,
+            Material.POTATOES to Material.POTATO,
+            Material.BEETROOTS to Material.BEETROOT_SEEDS,
+            Material.NETHER_WART to Material.NETHER_WART,
+            Material.PUMPKIN_STEM to Material.PUMPKIN_SEEDS,
+            Material.ATTACHED_PUMPKIN_STEM to Material.PUMPKIN_SEEDS,
+            Material.MELON_STEM to Material.MELON_SEEDS,
+            Material.ATTACHED_MELON_STEM to Material.MELON_SEEDS,
+            Material.COCOA to Material.COCOA_BEANS
+        )
+        private val DEFAULT_STEMS = mapOf(
+            Material.ATTACHED_PUMPKIN_STEM to Material.PUMPKIN_STEM,
+            Material.ATTACHED_MELON_STEM to Material.MELON_STEM
         )
     }
 }

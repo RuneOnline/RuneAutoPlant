@@ -21,20 +21,20 @@ class PlayerCountRepository(private val configuration: PluginConfiguration) {
 
     fun connect() {
         val settings = MongoClientSettings.builder()
-            .applyConnectionString(ConnectionString(configuration.mongoUri))
+            .applyConnectionString(ConnectionString(configuration.mongo.uri))
             // ping 실패를 30초 넘게 기다리지 않도록 서버 선택 타임아웃을 5초로 낮춘다.
             .applyToClusterSettings { it.serverSelectionTimeout(5, TimeUnit.SECONDS) }
             .build()
         client = MongoClients.create(settings)
-        val database = client.getDatabase(configuration.mongoDatabase)
+        val database = client.getDatabase(configuration.mongo.database)
         // create()는 lazy라 연결 실패를 던지지 않는다. ping으로 즉시 확인해 원인을 드러낸다.
         try {
             database.runCommand(Document("ping", 1))
         } catch (e: MongoException) {
             client.close()
-            throw MongoConnectionException(configuration.mongoUri, e)
+            throw MongoConnectionException(configuration.mongo.uri, e)
         }
-        collection = database.getCollection(configuration.mongoCollection)
+        collection = database.getCollection(configuration.mongo.collection)
     }
 
     fun close() {

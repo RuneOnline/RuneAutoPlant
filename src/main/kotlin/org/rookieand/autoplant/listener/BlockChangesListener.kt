@@ -2,6 +2,7 @@ package org.rookieand.autoplant.listener
 
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.rookieand.autoplant.service.CropService
@@ -12,16 +13,13 @@ class BlockChangesListener(
     private val playerCountService: PlayerCountService
 ) : Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onBreakCropBlock(event: BlockBreakEvent) {
         val player = event.player
         if (player.gameMode !== GameMode.SURVIVAL) return
         if (playerCountService.getCount(player.uniqueId) <= 0) return
 
-        val blockData = event.block.blockData
-        if (!cropService.isFullyGrownCrop(blockData)) return
-
-        cropService.replantCrop(blockData.material, event.block.location)
+        if (!cropService.tryReplant(player, event.block)) return
         playerCountService.takeCount(player.uniqueId, 1)
     }
 }

@@ -23,7 +23,6 @@ fun autoplantModule(plugin: JavaPlugin) = module {
     single { PlayerCountRegistry() }
     single { PlayerCountRepository(get()) }
     single { PlayerCountStorable(get(), get()) }
-
     single { PlayerCountService(get(), get()) }
     single { CropService(get(), get()) }
 

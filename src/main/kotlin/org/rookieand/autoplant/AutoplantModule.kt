@@ -8,10 +8,12 @@ import org.rookieand.autoplant.command.AutoplantCommand
 import org.rookieand.autoplant.configuration.PluginConfiguration
 import org.rookieand.autoplant.database.PlayerCountRepository
 import org.rookieand.autoplant.listener.BlockChangesListener
+import org.rookieand.autoplant.listener.CustomCropsListener
 import org.rookieand.autoplant.listener.PlayerConnectionListener
 import org.rookieand.autoplant.registry.PlayerCountRegistry
 import org.rookieand.autoplant.scheduler.PlayerCountSyncScheduler
 import org.rookieand.autoplant.service.CropService
+import org.rookieand.autoplant.service.CustomCropsService
 import org.rookieand.autoplant.service.PlayerCountService
 import org.rookieand.autoplant.storable.PlayerCountStorable
 
@@ -25,8 +27,10 @@ fun autoplantModule(plugin: JavaPlugin) = module {
     single { PlayerCountStorable(get(), get()) }
     single { PlayerCountService(get(), get()) }
     single { CropService(get(), get()) }
+    single { CustomCropsService(get(), get()) }
 
     single { BlockChangesListener(get(), get()) }
+    single { CustomCropsListener(get(), get()) }
     single { PlayerConnectionListener(get(), get()) }
 
     single { PlayerCountSyncScheduler(get(), get(), get()) }

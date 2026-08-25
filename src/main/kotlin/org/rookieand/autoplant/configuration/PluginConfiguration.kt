@@ -12,6 +12,7 @@ class PluginConfiguration(plugin: JavaPlugin) {
     val replantDelayTicks: Long = loadReplantDelayTicks()
     val cropSeeds: Map<Material, Material> = loadCropSeeds()
     val stemReplants: Map<Material, Material> = loadStemReplants()
+    val customCropsEnabled: Boolean = loadCustomCropsEnabled()
 
     private fun loadMongo() = MongoSettings(
         uri = config.getString("mongodb.uri") ?: "mongodb://localhost:27017",
@@ -25,13 +26,14 @@ class PluginConfiguration(plugin: JavaPlugin) {
     private fun loadReplantDelayTicks(): Long =
         config.getLong("replant.delay-ticks").takeIf { it > 0 } ?: 20L
 
-    // 작물 블럭 -> 소모할 씨앗
     private fun loadCropSeeds(): Map<Material, Material> =
         readMaterialMap("crops").ifEmpty { DEFAULT_CROP_SEEDS }
 
-    // 부착 줄기 -> 재심기할 성장 줄기
     private fun loadStemReplants(): Map<Material, Material> =
         readMaterialMap("stems").ifEmpty { DEFAULT_STEMS }
+
+    private fun loadCustomCropsEnabled(): Boolean =
+        config.getBoolean("custom-crops.enabled", true)
 
     private fun readMaterialMap(path: String): Map<Material, Material> {
         val section = config.getConfigurationSection(path) ?: return emptyMap()

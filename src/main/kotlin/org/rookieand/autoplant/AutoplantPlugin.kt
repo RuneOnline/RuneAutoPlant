@@ -9,7 +9,9 @@ import org.rookieand.autoplant.api.AutoplantApi
 import org.rookieand.autoplant.command.AutoplantCommand
 import org.rookieand.autoplant.database.MongoConnectionException
 import org.rookieand.autoplant.database.PlayerCountRepository
+import org.rookieand.autoplant.configuration.PluginConfiguration
 import org.rookieand.autoplant.listener.BlockChangesListener
+import org.rookieand.autoplant.listener.CustomCropsListener
 import org.rookieand.autoplant.listener.PlayerConnectionListener
 import org.rookieand.autoplant.scheduler.PlayerCountSyncScheduler
 import org.rookieand.autoplant.storable.PlayerCountStorable
@@ -34,6 +36,11 @@ class AutoplantPlugin : JavaPlugin() {
 
         server.pluginManager.registerEvents(koin.get<BlockChangesListener>(), this)
         server.pluginManager.registerEvents(koin.get<PlayerConnectionListener>(), this)
+
+        if (koin.get<PluginConfiguration>().customCropsEnabled && server.pluginManager.isPluginEnabled("CustomCrops")) {
+            server.pluginManager.registerEvents(koin.get<CustomCropsListener>(), this)
+            logger.info("CustomCrops 연동을 활성화했습니다.")
+        }
 
         koin.get<AutoplantCommand>().register()
 

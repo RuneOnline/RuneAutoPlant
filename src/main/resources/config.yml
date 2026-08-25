@@ -22,3 +22,7 @@ crops:
 stems:
   ATTACHED_PUMPKIN_STEM: PUMPKIN_STEM
   ATTACHED_MELON_STEM: MELON_STEM
+# CustomCrops(Xiao-MoMi) 연동: 다 자란 커스텀 작물 수확 시 씨앗 소모 후 재심기
+# (CustomCrops 플러그인이 설치돼 있어야 동작한다)
+custom-crops:
+  enabled: true

@@ -14,6 +14,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.momirealms.net/releases/")
 }
 
 dependencies {
@@ -23,6 +24,7 @@ dependencies {
     }
 
     compileOnly("io.papermc.paper:paper-api:${mcApiVersion}")
+    compileOnly("net.momirealms:custom-crops:3.6.40")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
